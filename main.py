@@ -13,7 +13,9 @@ def getChat():
     post = post.replace("{username}",db[key]["username"])
     post = post.replace("{timestamp}",key)
     post = post.replace("{message}",db[key]["message"])
+    #if specified individual
     if request.headers["X-Replit-User-Id"] == os.getenv("myID"):
+      #allows individual to delete posts
       post = post.replace("{admin}",f"""<a href="/delete?id={key}">❌</a>""")
     else:
       post = post.replace("{admin}","")
