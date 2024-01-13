@@ -46,19 +46,23 @@ def chat():
 
 @app.route("/add",methods=["POST"])
 def add():
+  #redirecting non admins to home page:
   if request.headers["X-Replit-User-Name"] == "":
     return redirect("/")
   form = request.form
   date = datetime.datetime.now()
   timestamp = datetime.datetime.timestamp(date)
+  #storing in db the chat add request
   db[timestamp] = {"username":request.headers["X-Replit-User-Name"],"id":request.headers["X-Replit-User-Id"],"message":form["message"]}
   return redirect("/")
 
 @app.route("/delete",methods=["GET"])
 def delete():
+  #if not a specified ID user:
   if request.headers["X-Replit-User-Id"] != os.getenv("myID"):
     return redirect("/")
   id = request.values["id"]
+  #delete specific chat post from db
   del db[id]
   return redirect("/")
 
